@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #quiz-container {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 400px;
+    }
+
+    #question-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #options-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    button {
+      padding: 20px;
+      margin-top: 10px;
+      background-color: #6f4caf;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #timer-container {
+      text-align: center;
+    }
+
+    #timer {
+      color: #000000;
+    }
+  </style>
+  <title>Cuestionario de Programación</title>
+</head>
+<body>
+  <div id="quiz-container">
+    <div id="question-container">
+      <h2 id="question-text"></h2>
+      <div id="options-container"></div>
+    </div>
+    <div id="timer-container">
+      <p id="timer">Tiempo restante: 5:00</p>
+    </div>
+    <button id="next-btn" onclick="nextQuestion()">Siguiente</button>
+  </div>
+  <script>
+    const questions = [
+      {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 3
+      },
+      {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 4
+      },
+      {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 3
+      },
+      {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 2
+      },
+      {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 2
+      },
+      {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 2
+      },
+       {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 2
+      },
+      {
+        question: '¿Cuál es la capital de Francia?',
+        options: ['Berlín', 'Madrid', 'París', 'Londres'],
+        correctIndex: 2
+      },
+      // Agrega más preguntas aquí
+    ];
+
+    let currentQuestionIndex = 0;
+    let timer;
+    let timeRemaining = 300; // 5 minutos en segundos
+
+    function startQuiz() {
+      showQuestion();
+      startTimer();
+    }
+
+    function showQuestion() {
+      const questionContainer = document.getElementById('question-container');
+      const optionsContainer = document.getElementById('options-container');
+      const questionText = document.getElementById('question-text');
+
+      const currentQuestion = questions[currentQuestionIndex];
+
+      questionText.textContent = currentQuestion.question;
+
+      optionsContainer.innerHTML = '';
+      currentQuestion.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.onclick = () => checkAnswer(index);
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(index) {
+      const currentQuestion = questions[currentQuestionIndex];
+
+      if (index === currentQuestion.correctIndex) {
+        // Respuesta correcta, podrías hacer algo aquí si lo deseas
+        console.log('Respuesta correcta');
+      } else {
+        // Respuesta incorrecta, podrías hacer algo aquí si lo deseas
+        console.log('Respuesta incorrecta');
+      }
+
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+        resetTimer();
+      } else {
+        // Fin del cuestionario, podrías hacer algo aquí si lo deseas
+        console.log('Fin del cuestionario');
+        clearInterval(timer);
+        document.getElementById('timer').textContent = 'Tiempo restante: :00';
+      }
+    }
+
+    function startTimer() {
+      timer = setInterval(() => {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById('timer5').textContent = `Tiempo restante: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (timeRemaining > 0) {
+          timeRemaining--;
+        } else {
+          clearInterval(timer);
+          // Tiempo agotado, podrías hacer algo aquí si lo deseas
+          console.log('Tiempo agotado');
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timeRemaining = 300;
+      startTimer();
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+        resetTimer();
+      }
+    }
+
+    // Inicia el cuestionario cuando se carga la página
+    window.onload = startQuiz;
+  </script>
+</body>
+</html>
